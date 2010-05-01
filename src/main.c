@@ -30,7 +30,7 @@ void TaskGenerateNewPopulation(void)
 	ATOMIC_BLOCK( ATOMIC_RESTORESTATE ){
 		display_byte_line(0x00, 0);
 		generate_next_population();
-		OS_AddTaskToTimerQueue( TaskGenerateNewPopulation, POPULATION_DELAY );
+//		OS_AddTaskToTimerQueue( TaskGenerateNewPopulation, POPULATION_DELAY );
 	}
 }
 
@@ -51,7 +51,7 @@ int main(void)
 	InitAll();
 	OS_Iinialize();
 
-	OS_AddTaskToEvalQueue( Task_UpdateMatrix8x8 );
+	//OS_AddTaskToEvalQueue( Task_UpdateMatrix8x8 );
 
 
 	OS_AddTaskToTimerQueue( TaskGenerateNewPopulation, POPULATION_DELAY );
@@ -61,6 +61,7 @@ int main(void)
 	for(;;){
 //		wdt_reset();
 		OS_EvalTask();
+		Task_UpdateMatrix8x8();
 	}
 	return 0;
 }

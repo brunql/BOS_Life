@@ -11,7 +11,7 @@
 #include "bos_hal.h"
 #include "main.h"
 
-#define NULL 0
+//#define NULL 0
 
 #define EVAL_QUEUE_SIZE		5
 #define TIMER_QUEUE_SIZE 	5
