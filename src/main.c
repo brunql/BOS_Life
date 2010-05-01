@@ -6,7 +6,7 @@
  */
 
 #include <util/atomic.h>
-//#include <stdlib.h>
+#include <stdlib.h>
 
 #include "main.h"
 #include "matrix8x8.h"
@@ -25,12 +25,12 @@ ISR(TiMER_INTERRUPT_VECTOR)
 
 uint8_t population_display_index = 0x00;
 
-void TaskGenerateNewPopulation(void)
+void Task_GenerateNewPopulation(void)
 {
 	ATOMIC_BLOCK( ATOMIC_RESTORESTATE ){
 		display_byte_line(0x00, 0);
 		generate_next_population();
-//		OS_AddTaskToTimerQueue( TaskGenerateNewPopulation, POPULATION_DELAY );
+		OS_AddTaskToTimerQueue( Task_GenerateNewPopulation, POPULATION_DELAY );
 	}
 }
 
@@ -41,27 +41,28 @@ void Task_UpdateMatrix8x8(void)
 		if( ++population_display_index >= 0x08){
 			population_display_index = 0x00;
 		}
-		OS_AddTaskToEvalQueue( Task_UpdateMatrix8x8 );
 	}
-	//OS_AddTaskToTimerQueue( Task_UpdateMatrix8x8, UPDATE_MATRIX_DELAY );
+	OS_AddTaskToTimerQueue( Task_UpdateMatrix8x8, UPDATE_MATRIX_DELAY );
 }
 
 int main(void)
 {
+	// Initialize I/O ports and UART if need it
 	InitAll();
+
+	// OS initialization: clear timer and eval queue
 	OS_Iinialize();
 
-	//OS_AddTaskToEvalQueue( Task_UpdateMatrix8x8 );
+	// Add test tasks
+	OS_AddTaskToEvalQueue( Task_UpdateMatrix8x8 );
+	OS_AddTaskToTimerQueue( Task_GenerateNewPopulation, POPULATION_DELAY );
 
-
-	OS_AddTaskToTimerQueue( TaskGenerateNewPopulation, POPULATION_DELAY );
-
+	// Configure timers and global enable interrupts
 	OS_InitSystemTimerAndSei();
-//	cli();
+
 	for(;;){
-//		wdt_reset();
+		// OS takes task from eval queue and run it
 		OS_EvalTask();
-		Task_UpdateMatrix8x8();
 	}
 	return 0;
 }

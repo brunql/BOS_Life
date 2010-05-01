@@ -50,6 +50,7 @@ void OS_AddTaskToEvalQueue(ptrTask task)
 	ATOMIC_BLOCK( ATOMIC_RESTORESTATE ){
 		if (evalQueue[evalQueueAddIndex] == NULL){
 			evalQueue[evalQueueAddIndex] = task;
+
 			if(++evalQueueAddIndex == EVAL_QUEUE_SIZE){
 				evalQueueAddIndex = 0x00;
 			}

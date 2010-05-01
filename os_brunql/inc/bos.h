@@ -13,8 +13,8 @@
 
 //#define NULL 0
 
-#define EVAL_QUEUE_SIZE		5
-#define TIMER_QUEUE_SIZE 	5
+#define EVAL_QUEUE_SIZE		3	/* Оперативка == хуита + стек... стек! СТЕК!!!  СУКА!!!!!!!!*/
+#define TIMER_QUEUE_SIZE 	3
 
 typedef void (*ptrTask)(void);
 
