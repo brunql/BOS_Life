@@ -1,0 +1,1 @@
+sudo avrdude -pt2313 -cusbasp -Uflash:w:Debug/Life8x8_tiny2313.hex:a
